@@ -393,7 +393,9 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Profit & Loss</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                            <div class="h5 mb-0 font-weight-bold "
+                                                style="{% if i.profit_loss < 0 %} color: red;{% else %}color: green;{% endif %}">
+                                                ${{total_proandloss | floatformat:2}}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -479,7 +481,7 @@
                                                                     src="https://s3.tradingview.com/tv.js"></script>
                                                                 <script type="text/javascript">
 
-                                                                    var pair_name = "BTC";
+                                                                    var pair_name = "SOLUSDT";
                                                                     new TradingView.widget(
                                                                         {
                                                                             "width": 820,
@@ -710,9 +712,10 @@
                                                     <th scope="col" class="text-center">Image</th>
                                                     <th scope="col" class="text-center">Quantity</th>
                                                     <th scope="col" class="text-center">Name</th>
-                                                    <th scope="col" class="text-center">Buy Price</th>
                                                     <th scope="col" class="text-center">Current price</th>
+                                                    <th scope="col" class="text-center">Buy Price</th>
                                                     <th scope="col" class="text-center">Total </th>
+                                                    <th scope="col" class="text-center">P&L </th>
                                                 </tr>
                                             </thead>
                                             <tbody id="myTable">
@@ -725,21 +728,25 @@
 
                                                 <tr>
                                                     <td class="text-center"><img
-                                                            src="https://coinicons-api.vercel.app/api/icon/{{i.coin_name.lower}}"
+                                                            src="https://coinicons-api.vercel.app/api/icon/{{i.coin.coin_name.lower}}"
                                                             style="height: 40px; width:40px;">
                                                     </td>
                                                     <td class="text-center name-column">
-                                                        <h6>{{i.coin_quantity}}</h6>
+                                                        <h6>{{i.coin.coin_quantity}}</h6>
                                                     </td>
-                                                    <td class="text-center symbol-column">{{i.coin_name}}</td>
-                                                    <td class="text-center price-column">
-                                                        {{i.coin_price|floatformat:2}}</td>
-                                                    <td class="text-center percent-change-column"
-                                                        style="{% if i.quote.USD.percent_change_24h < 0 %}color: red;{% else %}color: green;{% endif %}">
-                                                        {{ i.quote.USD.percent_change_24h|floatformat:2 }}
+                                                    <td class="text-center symbol-column">{{i.coin.coin_name}}</td>
+                                                    <td class="text-center price-column"
+                                                        style="{% if i.current_price < 0 %} color: red;{% else %}color: green;{% endif %}">
+                                                        {{ i.current_price|floatformat:2 }}
                                                     </td>
+                                                    <td class="text-center db-price-column">
+                                                        {{i.coin.coin_price|floatformat:2}}</td>
                                                     <td class="text-center volume-column">
-                                                        ${{i.total_amount|floatformat:2}}</td>
+                                                        ${{i.coin.total_amount|floatformat:2}}</td>
+                                                    <td class="text-center volume-column"
+                                                        style="{% if i.profit_loss < 0 %} color: red;{% else %}color: green;{% endif %}">
+
+                                                        ${{i.profit_loss|floatformat:2}}</td>
 
                                                 </tr>
                                                 {% endfor %}
@@ -1089,3 +1096,36 @@
 
 
 </script>
+
+<!-- user_dashboard.html -->
+
+<!-- Your existing HTML content -->
+
+<script>
+    var reloadTimer;
+
+    function reloadPage() {
+        location.reload();
+    }
+
+    function startReloadTimer() {
+        // Start the reload timer if the user is inactive
+        reloadTimer = setTimeout(reloadPage, 10000); // 10000 milliseconds = 10 seconds
+    }
+
+    function resetReloadTimer() {
+        // Reset the reload timer when the user is active
+        clearTimeout(reloadTimer);
+        startReloadTimer();
+    }
+
+    // Start the timer initially
+    startReloadTimer();
+
+    // Listen for user activity events
+    document.addEventListener("mousemove", resetReloadTimer);
+    document.addEventListener("keypress", resetReloadTimer);
+</script>
+</body>
+
+</html>

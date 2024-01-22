@@ -59,6 +59,7 @@ class UserCryptoWallet(models.Model):
     coin_price = models.FloatField(default=00.00)
     coin_status = models.CharField(max_length=100)
     total_amount = models.FloatField(default=00.00)
+    profitandloss = models.FloatField(default=00.00)
 
     def __str__(self):
         return f"{self.userwallet} = {self.coin_name} * {self.coin_quantity}"

@@ -171,15 +171,43 @@ def user_dashboard(request):
             userwallet=request.user.userprofile.userwallet
         )
 
+        coin_price = []
+        pro_loss = []
+        for i in user_coins:
+            dict_price = {"coin": i, "current_price": "", "profit_loss": ""}
+            # print(dict_price)
+            coin_price.append(dict_price)
+
+        for api_coin in api_data:
+            symbol = api_coin.get("symbol")
+            current_price = api_coin.get("quote").get("USD").get("price")
+
+            for coin_info in coin_price:
+                symbol2 = coin_info["coin"].coin_name
+
+                if symbol == symbol2:
+                    coin_info["current_price"] = current_price
+                    quantity = coin_info["coin"].coin_quantity
+                    purchase_price = coin_info["coin"].coin_price
+                    current_value = quantity * current_price
+                    profit_loss = current_value - (quantity * purchase_price)
+                    pro_loss.append(profit_loss)
+                    coin_info["profit_loss"] = profit_loss
+        total_proandloss = sum(pro_loss)
+        print(coin_price)
         return render(
             request,
             "user_dashboard.html",
-            {"api_data": api_data, "user_coins": user_coins},
+            {
+                "api_data": api_data,
+                "user_coins": coin_price,
+                "total_proandloss": total_proandloss,
+            },
         )
     except Exception as e:
         # Handle exceptions appropriately, e.g., log the error
         print(e)
-        return render(request, "error.html")  # You can create a custom error template
+        return render(request, "error.html")
 
 
 def order_execute(request):
