@@ -9,4 +9,5 @@ urlpatterns = [
     path("kyc/", views.user_kyc, name="kyc"),
     path("dashboard/", views.user_dashboard, name="dashboard"),
     path("coin-register/", views.order_execute, name="order_execute"),
+    path("activity/", views.coin_activity, name="activity"),
 ]

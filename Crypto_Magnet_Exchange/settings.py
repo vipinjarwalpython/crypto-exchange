@@ -131,3 +131,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = "/media/"
+
+
+# ALLOW HOST MULTIPLE IP ADDRESSES
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://siteyouwantto.allow.com",
+    "http://anothersite.allow.com",
+]

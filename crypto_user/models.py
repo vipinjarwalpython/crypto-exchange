@@ -33,15 +33,6 @@ class BankAccount(models.Model):
     swift_code = models.CharField(max_length=20)
 
 
-class Transaction(models.Model):
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    amount = models.FloatField()
-    transaction_type = models.CharField(
-        max_length=20
-    )  # Deposit, Withdrawal, Trade, etc.
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-
 class UserWallet(models.Model):
     user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     balance = models.FloatField(default=00.00)
@@ -52,6 +43,20 @@ class UserWallet(models.Model):
 
 
 class UserCryptoWallet(models.Model):
+    userwallet = models.ForeignKey(UserWallet, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    coin_name = models.CharField(max_length=100)
+    coin_quantity = models.FloatField(default=00.00)
+    coin_price = models.FloatField(default=00.00)
+    coin_status = models.CharField(max_length=100)
+    total_amount = models.FloatField(default=00.00)
+    profitandloss = models.FloatField(default=00.00)
+
+    def __str__(self):
+        return f"{self.userwallet} = {self.coin_name} * {self.coin_quantity}"
+
+
+class CoinTransaction(models.Model):
     userwallet = models.ForeignKey(UserWallet, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     coin_name = models.CharField(max_length=100)

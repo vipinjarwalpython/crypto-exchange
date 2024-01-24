@@ -365,14 +365,15 @@
                     <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-6 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            <div
+                                                class="text-xs font-weight-bold text-primary text-uppercase mb-2 text-center">
                                                 Wallet Balance</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <div class="h5 mb-0 font-weight-bold text-center">
                                                 ${{user.userprofile.userwallet.balance | floatformat:2}}</div>
                                         </div>
                                         <div class="col-auto">
@@ -384,66 +385,20 @@
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-6 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            <div
+                                                class="text-xs font-weight-bold text-success text-uppercase mb-1 text-center">
                                                 Profit & Loss</div>
-                                            <div class="h5 mb-0 font-weight-bold "
+                                            <div class="h5 mb-0 font-weight-bold text-center"
                                                 style="{% if total_proandloss < 0 %} color: red;{% else %}color: green;{% endif %}">
                                                 ${{total_proandloss | floatformat:2}}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -456,175 +411,64 @@
                     <div class="row">
                         <!-- Area Chart -->
                         <div class="col-xl-6 col-lg-7">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card shadow mb-4">
-                                            <!-- Card Header - Dropdown -->
-                                            <div
-                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                                <h6 class="m-0 font-weight-bold text-primary">Token Graph</h6>
-                                            </div>
-                                            <!-- Card Body -->
-                                            <div class="card-body overflow-hidden position-relative p-1"
-                                                style="height: 400px;">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary"><a href="/user/dashboard/">Coin
+                                            Transaction</a></h6>
 
-                                                <div class="card-body h-100 w-100 p-0">
-                                                    <div class="chart-area h-100 w-100 p-1">
-                                                        <div class="tradingview-widget-container h-100 w-100 border-0">
-                                                            <!-- Place the TradingView widget container inside a specific card div -->
-                                                            <div id="tradingview-widget-container"
-                                                                style="height: 100%; width: 100%;">
-                                                                <script type="text/javascript"
-                                                                    src="https://s3.tradingview.com/tv.js"></script>
-                                                                <script type="text/javascript">
+                                </div>
 
-                                                                    var pair_name = "SOLUSDT";
-                                                                    new TradingView.widget(
-                                                                        {
-                                                                            "width": 840,
-                                                                            "height": 380,
-                                                                            "symbol": pair_name,
-                                                                            "interval": "D",
-                                                                            "timezone": "Etc/UTC",
-                                                                            "theme": "light",
-                                                                            "style": "1",
-                                                                            "locale": "en",
-                                                                            "toolbar_bg": "#f1f3f6",
-                                                                            "enable_publishing": false,
-                                                                            "allow_symbol_change": true,
-                                                                            "container_id": "tradingview_9480b"
-                                                                        }
-                                                                    );
-                                                                </script>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 p-1">
-                                        <div class="card shadow mb-4">
-                                            <!-- Card Header - Dropdown -->
-                                            <div
-                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                                <h6 class="m-0 font-weight-bold text-primary">Trading Section</h6>
-                                                <div class="dropdown no-arrow">
-
-                                                </div>
-                                            </div>
-                                            <!-- Card Body -->
-                                            <div class="card-body" style="height: 420px;">
-
-                                                {% if messages %}
-
-                                                {% for message in messages %}
-
+                                <!-- Card Body -->
+                                <div class=" overflow-hidden position-relative" style="height: 380px;">
+                                    <div class="table-responsive overflow-auto position-sticky h-100">
+                                        <table class="table table-light ">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="text-center">Image</th>
+                                                    <th scope="col" class="text-center">Name</th>
+                                                    <th scope="col" class="text-center">Quantity</th>
+                                                    <th scope="col" class="text-center">Price</th>
+                                                    <th scope="col" class="text-center">Total Ammount</th>
+                                                    <th scope="col" class="text-center">Status </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="myTable">
+                                                {% if error_message %}
                                                 <div class="alert alert-danger" role="alert">
-                                                    {{ message }}
-                                                    <button type="button" class="close" data-dismiss="alert"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                                    {{ error_message }}
                                                 </div>
+                                                {%else%}
+                                                {% for i in user_coin_data %}
+                                                <tr>
+                                                    <td class="text-center"><img
+                                                            src="https://coinicons-api.vercel.app/api/icon/{{i.coin_name.lower}}"
+                                                            style="height: 40px; width:40px;">
+                                                    </td>
+                                                    <td class="text-center name-column">
+                                                        <h6>{{i.coin_name}}</h6>
+                                                    </td>
+                                                    <td class="text-center symbol-column">{{i.coin_quantity}}</td>
+                                                    <td class="text-center price-column">
+                                                        {{i.coin_price|floatformat:2}}</td>
+                                                    <td class="text-center volume-column">
+                                                        {{i.total_amount|floatformat:2}}</td>
+                                                    <td class="text-center percent-change-column"
+                                                        style="{% if i.coin_status == 'sell' %}color: red;{% else %}color: green;{% endif %}">
+                                                        {{ i.coin_status }}
+                                                    </td>
 
+                                                </tr>
                                                 {% endfor %}
-
                                                 {% endif %}
 
-                                                <form method="post" action="/user/coin-register/" id="form-coin">
-                                                    {% csrf_token %}
-                                                    <div class="mb-3">
-                                                        <label for="text" class="form-label">Coin</label>
-                                                        <input type="text" class="form-control" id="coin"
-                                                            name="coin_name">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="price" class="form-label">Price</label>
-                                                        <input type="float" class="form-control" id="price"
-                                                            name="coin_price">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="quantity" class="form-label">Quantity</label>
-                                                        <input type="float" class="form-control" id="coin_quantity"
-                                                            name="coin_quantity" onchange="calculate(event)">
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <label for="total_ammount" class="form-label">Total
-                                                            Ammount</label>
-                                                        <input type="float" class="form-control" id="total_ammount"
-                                                            value="0" name="total_ammount">
-                                                    </div>
-                                                    <input type="text" class="d-none" id="status" name="coin_status"
-                                                        value="">
-                                                    <div class="mb-3 text-center ">
-                                                        <button class="btn btn-success px-5 me-2" type="button"
-                                                            onclick="buy()">Buy</button>
-                                                        <button class="btn btn-danger px-5 ms-2" type="button"
-                                                            onclick="sell()">Sell</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 p-1">
-                                        <div class="card shadow mb-4">
-                                            <!-- Card Header - Dropdown -->
-
-                                            <div
-                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                                <h6 class="m-0 font-weight-bold text-primary">Token Permormance</h6>
-                                                <div class="dropdown no-arrow">
-                                                </div>
-                                            </div>
-                                            <!-- Card Body -->
-                                            <div class="card-body" style="height: 420px;>
-                                                <h4 class=" small font-weight-bold">Server Migration <span
-                                                    class="float-right">20%</span>
-                                                </h4>
-                                                <div class="progress mb-4">
-                                                    <div class="progress-bar bg-danger" role="progressbar"
-                                                        style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                                <h4 class="small font-weight-bold">Sales Tracking <span
-                                                        class="float-right">40%</span>
-                                                </h4>
-                                                <div class="progress mb-4">
-                                                    <div class="progress-bar bg-warning" role="progressbar"
-                                                        style="width: 40%" aria-valuenow="40" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                                <h4 class="small font-weight-bold">Customer Database <span
-                                                        class="float-right">60%</span></h4>
-                                                <div class="progress mb-4">
-                                                    <div class="progress-bar" role="progressbar" style="width: 60%"
-                                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <h4 class="small font-weight-bold">Payout Details <span
-                                                        class="float-right">80%</span>
-                                                </h4>
-                                                <div class="progress mb-4">
-                                                    <div class="progress-bar bg-info" role="progressbar"
-                                                        style="width: 80%" aria-valuenow="80" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                                <h4 class="small font-weight-bold">Account Setup <span
-                                                        class="float-right">Complete!</span></h4>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-success" role="progressbar"
-                                                        style="width: 100%" aria-valuenow="100" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
+
                             </div>
-
-
                         </div>
 
                         <div class="col-xl-6 col-lg-7">
@@ -632,20 +476,8 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary"><a href="/user/dashboard/">Token
-                                            Overview</a></h6>
-
-
-                                    <div class="form-inline" data-mdb-input-init>
-                                        <form action="" method="POST">
-                                            {% csrf_token %}
-                                            <input type="search" id="form1" class="form-control"
-                                                placeholder="Search Coin" name="coin" />
-                                            <button type="submit" class="btn btn-primary" data-mdb-ripple-init>
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </form>
-                                    </div>
+                                    <h6 class="m-0 font-weight-bold text-primary"><a href="/user/dashboard/">Ammount
+                                            Transaction</a></h6>
 
                                 </div>
 
@@ -676,7 +508,7 @@
                                                             style="height: 40px; width:40px;">
                                                     </td>
                                                     <td class="text-center name-column">
-                                                        <h6>{{i.name}}</h6>
+                                                        <h6>{{i.coin_name}}</h6>
                                                     </td>
                                                     <td class="text-center symbol-column">{{i.symbol}}</td>
                                                     <td class="text-center price-column">
@@ -698,82 +530,7 @@
                                 </div>
 
                             </div>
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">{{user.first_name}}
-                                        {{user.last_name}}'s Wallet</h6>
 
-
-                                    <div class="form-inline" data-mdb-input-init>
-                                        <form action="" method="POST">
-                                            {% csrf_token %}
-                                            <input type="search" id="form1" class="form-control"
-                                                placeholder="Search Coin" name="coin" />
-                                            <button type="submit" class="btn btn-primary" data-mdb-ripple-init>
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-
-                                </div>
-
-                                <!-- Card Body -->
-                                <div class=" overflow-hidden position-relative" style="height: 410px;">
-                                    <div class="table-responsive overflow-auto position-sticky h-100">
-                                        <table class="table table-light ">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="text-center">Image</th>
-                                                    <th scope="col" class="text-center">Quantity</th>
-                                                    <th scope="col" class="text-center">Name</th>
-                                                    <th scope="col" class="text-center">Current price</th>
-                                                    <th scope="col" class="text-center">Buy Price</th>
-                                                    <th scope="col" class="text-center">Total </th>
-                                                    <th scope="col" class="text-center">P&L </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="myTable">
-                                                {% if error_message %}
-                                                <div class="alert alert-danger" role="alert">
-                                                    {{ error_message }}
-                                                </div>
-                                                {%else%}
-                                                {% for i in user_coins %}
-
-                                                <tr>
-                                                    <td class="text-center"><img
-                                                            src="https://coinicons-api.vercel.app/api/icon/{{i.coin.coin_name.lower}}"
-                                                            style="height: 40px; width:40px;">
-                                                    </td>
-                                                    <td class="text-center name-column">
-                                                        <h6>{{i.coin.coin_quantity}}</h6>
-                                                    </td>
-                                                    <td class="text-center symbol-column">{{i.coin.coin_name}}</td>
-                                                    <td class="text-center price-column"
-                                                        style="{% if i.current_price < 0 %} color: red;{% else %}color: green;{% endif %}">
-                                                        {{ i.current_price|floatformat:2 }}
-                                                    </td>
-                                                    <td class="text-center db-price-column">
-                                                        {{i.coin.coin_price|floatformat:2}}</td>
-                                                    <td class="text-center volume-column">
-                                                        ${{i.coin.total_amount|floatformat:2}}</td>
-                                                    <td class="text-center volume-column"
-                                                        style="{% if i.profit_loss < 0 %} color: red;{% else %}color: green;{% endif %}">
-
-                                                        ${{i.profit_loss|floatformat:2}}</td>
-
-                                                </tr>
-                                                {% endfor %}
-                                                {% endif %}
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
 
 
@@ -856,142 +613,6 @@
     <script src="/static/js/demo/chart-area-demo.js"></script>
     <script src="/static/js/demo/chart-pie-demo.js"></script>
 
-</body>
-
-</html>
-
-<!-- Clickable Dashboard -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Select all the rows in the table
-        const tableRows = document.querySelectorAll("#myTable tr");
-
-        // Function to handle row click
-        const handleRowClick = (event) => {
-            // Get the clicked row
-            const clickedRow = event.currentTarget;
-
-            // Extract data from the clicked row
-            const name = clickedRow.querySelector(".name-column").textContent;
-            const symbol = clickedRow.querySelector(".symbol-column").textContent;
-            const price = clickedRow.querySelector(".price-column").textContent;
-            const percentChange = clickedRow.querySelector(".percent-change-column").textContent;
-            const volume = clickedRow.querySelector(".volume-column").textContent;
-
-            // You can perform any action with the extracted data
-
-        };
-
-        // Add click event listener to each row
-        tableRows.forEach(row => {
-            row.addEventListener("click", handleRowClick);
-            // Add a pointer cursor style to indicate that the rows are clickable
-            row.style.cursor = "pointer";
-        });
-    });
-</script>
-
-
-
-<!-- Calculator Script -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Select all the rows in the table
-        const tableRows = document.querySelectorAll("#myTable tr");
-
-        // Select the form fields
-        const coinInput = document.getElementById("coin");
-        const quantityInput = document.getElementById("quantity");
-        const priceInput = document.getElementById("price");
-        document.getElementById("total_ammount").value = 0;
-
-
-        // Function to handle row click
-        const handleRowClick = (event) => {
-            // Get the clicked row
-            const clickedRow = event.currentTarget;
-
-            // Extract data from the clicked row
-            const coin = clickedRow.querySelector(".symbol-column").textContent;
-            const price = parseFloat(clickedRow.querySelector(".price-column").textContent) || 0;
-
-            // Update the form fields
-            coinInput.value = coin;
-            priceInput.value = price;
-
-            // You can clear or update other form fields as needed
-            quantityInput.value = "";
-
-            // Optionally, submit the form automatically
-            // document.querySelector("form").submit();
-        };
-
-        // Add click event listener to each row
-        tableRows.forEach(row => {
-            row.addEventListener("click", handleRowClick);
-            // Add a pointer cursor style to indicate that the rows are clickable
-            row.style.cursor = "pointer";
-        });
-    });
-
-    function calculate(event) {
-        var price = document.getElementById("price").value;
-        var quantity = event.target.value;
-        var total = quantity * price;
-
-        document.getElementById("total_ammount").value = total.toFixed(2);
-    }
-</script>
-
-<script>
-    function buy() {
-        var form = document.getElementById("form-coin");
-        var status = document.getElementById("status");
-
-        status.value = "buy";
-        form.submit();
-    }
-
-    function sell() {
-        var form = document.getElementById("form-coin");
-        var status = document.getElementById("status");
-
-        status.value = "sell";
-        form.submit();
-    }
-
-
-</script>
-
-<!-- user_dashboard.html -->
-
-<!-- Your existing HTML content -->
-
-<script>
-    var reloadTimer;
-
-    function reloadPage() {
-        location.reload();
-    }
-
-    function startReloadTimer() {
-        // Start the reload timer if the user is inactive
-        reloadTimer = setTimeout(reloadPage, 60000); // 10000 milliseconds = 10 seconds
-    }
-
-    function resetReloadTimer() {
-        // Reset the reload timer when the user is active
-        clearTimeout(reloadTimer);
-        startReloadTimer();
-    }
-
-    // Start the timer initially
-    startReloadTimer();
-
-    // Listen for user activity events
-    document.addEventListener("mousemove", resetReloadTimer);
-    document.addEventListener("keypress", resetReloadTimer);
-</script>
 </body>
 
 </html>

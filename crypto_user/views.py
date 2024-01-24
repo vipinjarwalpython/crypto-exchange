@@ -8,11 +8,13 @@ from .models import (
     KYCInformation,
     UserProfile,
     UserWallet,
+    CoinTransaction,
 )
 from django.shortcuts import render
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
+from django.urls import reverse
 
 # Create your views here.
 
@@ -139,6 +141,10 @@ session.headers.update(headers)
 
 def user_dashboard(request):
     try:
+        # Delete objects with coin_quantity equal to 0.0
+        quntityzero = UserCryptoWallet.objects.filter(coin_quantity=0.0)
+        quntityzero.delete()
+
         response = session.get(url, params=parameters)
         data = json.loads(response.text)
         api_data = data["data"]
@@ -194,7 +200,8 @@ def user_dashboard(request):
                     pro_loss.append(profit_loss)
                     coin_info["profit_loss"] = profit_loss
         total_proandloss = sum(pro_loss)
-        print(coin_price)
+        # print(coin_price)
+
         return render(
             request,
             "user_dashboard.html",
@@ -226,40 +233,74 @@ def order_execute(request):
         for i in user_coins:
             if i.coin_name == coin_name:
                 if coin_status == "buy":
-                    i.coin_quantity = i.coin_quantity + coin_quantity
-                    i.total_amount = i.total_amount + total_amount
-                    i.coin_status = coin_status
-                    userwallet.balance = userwallet.balance - (
-                        coin_price * coin_quantity
-                    )
-                    userwallet.save()
+                    if userwallet.balance >= i.total_amount:
+                        i.coin_quantity = i.coin_quantity + coin_quantity
+                        i.total_amount = i.total_amount + total_amount
+                        i.coin_status = coin_status
 
-                else:
-                    i.coin_quantity = i.coin_quantity - coin_quantity
-                    i.total_amount = i.total_amount - total_amount
-                    i.coin_status = coin_status
+                        userwallet.balance = userwallet.balance - (
+                            coin_price * coin_quantity
+                        )
+                        userwallet.save()
+                    else:
+                        messages.error(
+                            request,
+                            f"Insufficient balance. Please deposit {i.total_amount} {i.coin_name} to your wallet",
+                        )
+                        return redirect("/user/dashboard/")
 
-                    userwallet.balance = userwallet.balance + (
-                        coin_price * coin_quantity
-                    )
-                    print(i.coin_quantity)
-                    if i.coin_quantity == 0.0:
-                        print("+++++++++++++++++++++++ inside loop")
-                        print(i.coin_name)
-                        i.delete()
-                userwallet.save()
+                if coin_status == "sell":
+                    if i.coin_quantity >= coin_quantity and coin_quantity >= 0:
+                        i.coin_quantity = i.coin_quantity - coin_quantity
+                        i.total_amount = i.total_amount - total_amount
+                        i.coin_status = coin_status
+
+                        userwallet.balance = userwallet.balance + (
+                            coin_price * coin_quantity
+                        )
+                        userwallet.save()
+                    else:
+                        messages.error(
+                            request,
+                            f"Sell only coin name - {coin_name} quantity - {i.coin_quantity}",
+                        )
+                        return redirect("/user/dashboard/")
                 i.save()
-                print(i)
+
+                CoinTransaction.objects.create(
+                    userwallet=i.userwallet,
+                    coin_name=i.coin_name,
+                    coin_quantity=i.coin_quantity,
+                    coin_price=i.coin_price,
+                    total_amount=i.total_amount,
+                    coin_status=i.coin_status,
+                )
 
                 return redirect("/user/dashboard/")
 
+        print(userwallet.balance)
+        print(total_amount)
         if coin_status == "buy":
-            userwallet.balance = userwallet.balance - (coin_price * coin_quantity)
-            userwallet.save()
+            if userwallet.balance >= total_amount:
+                userwallet.balance = userwallet.balance - (coin_price * coin_quantity)
+                userwallet.save()
+            else:
+                messages.error(
+                    request,
+                    f"Insufficient balance. Please deposit {total_amount}  -  {coin_name} to your wallet",
+                )
+                return redirect("/user/dashboard/")
 
         else:
-            userwallet.balance = userwallet.balance + (coin_price * coin_quantity)
-            userwallet.save()
+            if coin_quantity > 0.0:
+                userwallet.balance = userwallet.balance + (coin_price * coin_quantity)
+                userwallet.save()
+            else:
+                messages.error(
+                    request,
+                    f"Sell only this - {coin_name} - {coin_quantity}",
+                )
+                return redirect("/user/dashboard/")
 
         UserCryptoWallet.objects.create(
             userwallet=userwallet,
@@ -270,4 +311,28 @@ def order_execute(request):
             coin_status=coin_status,
         )
 
+        CoinTransaction.objects.create(
+            userwallet=userwallet,
+            coin_name=coin_name,
+            coin_quantity=coin_quantity,
+            coin_price=coin_price,
+            total_amount=total_amount,
+            coin_status=coin_status,
+        )
+
         return redirect("/user/dashboard/")
+
+
+def coin_activity(request):
+    user_coin_data = CoinTransaction.objects.filter(
+        userwallet=request.user.userprofile.userwallet
+    )
+    print(user_coin_data)
+
+    return render(
+        request,
+        "activity.html",
+        {
+            "user_coin_data": user_coin_data,
+        },
+    )
