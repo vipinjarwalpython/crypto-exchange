@@ -9,12 +9,12 @@ from .models import (
     UserProfile,
     UserWallet,
     CoinTransaction,
+    FundTransactions,
 )
 from django.shortcuts import render
 from requests import Request, Session
-from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
-from django.urls import reverse
+
 
 # Create your views here.
 
@@ -154,7 +154,7 @@ def user_dashboard(request):
         if request.method == "POST":
             coin = request.POST.get("coin").lower()
             if coin is not None:
-                print("==========================", coin)
+                # print("==========================", coin)
 
                 for i in api_data:
                     if coin == i.get("slug"):
@@ -329,10 +329,44 @@ def coin_activity(request):
     )
     print(user_coin_data)
 
+    funds_activity = FundTransactions.objects.filter(
+        userwallet=request.user.userprofile.userwallet
+    )
     return render(
         request,
         "activity.html",
-        {
-            "user_coin_data": user_coin_data,
-        },
+        {"user_coin_data": user_coin_data, "funds_activity": funds_activity},
     )
+
+
+def funds_activity(request):
+    if request.method == "POST":
+        amount = request.POST.get("amount")
+        status = request.POST.get("status")
+        userwallet = request.user.userprofile.userwallet
+
+        if status == "deposit":
+            if float(amount) > 0:
+                userwallet.balance = userwallet.balance + float(amount)
+                userwallet.save()
+            else:
+                messages.error(
+                    request,
+                    f"Please enter a valid amount to deposit",
+                )
+                return redirect("/user/activity/")
+        else:
+            if float(amount) < userwallet.balance:
+                userwallet.balance = userwallet.balance - float(amount)
+                userwallet.save()
+            else:
+                messages.error(
+                    request,
+                    f"Please enter a valid amount to withdraw",
+                )
+                return redirect("/user/activity/")
+        FundTransactions.objects.create(
+            userwallet=userwallet, amount=float(amount), status=status
+        )
+
+        return redirect("/user/activity/")

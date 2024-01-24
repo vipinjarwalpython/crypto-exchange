@@ -10,4 +10,5 @@ urlpatterns = [
     path("dashboard/", views.user_dashboard, name="dashboard"),
     path("coin-register/", views.order_execute, name="order_execute"),
     path("activity/", views.coin_activity, name="activity"),
+    path("fund-activity/", views.funds_activity, name="fund-activity"),
 ]

@@ -44,12 +44,13 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <span>User Interface</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">User Components:</h6>
                         <a class="collapse-item" href="/user/dashboard/">User Dashboard</a>
+                        <a class="collapse-item" href="/user/activity/">User Activity</a>
 
                     </div>
                 </div>
@@ -533,17 +534,18 @@
 
                                                 {% endif %}
 
+
                                                 <form method="post" action="/user/coin-register/" id="form-coin">
                                                     {% csrf_token %}
                                                     <div class="mb-3">
                                                         <label for="text" class="form-label">Coin</label>
                                                         <input type="text" class="form-control" id="coin"
-                                                            name="coin_name">
+                                                            name="coin_name" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="price" class="form-label">Price</label>
                                                         <input type="float" class="form-control" id="price"
-                                                            name="coin_price">
+                                                            name="coin_price" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="quantity" class="form-label">Quantity</label>
@@ -566,6 +568,7 @@
                                                             onclick="sell()">Sell</button>
                                                     </div>
                                                 </form>
+
                                             </div>
                                         </div>
                                     </div>

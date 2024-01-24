@@ -44,12 +44,13 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <span>User Interface</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">User Components:</h6>
                         <a class="collapse-item" href="/user/dashboard/">User Dashboard</a>
+                        <a class="collapse-item" href="/user/activity/">User Activity</a>
 
                     </div>
                 </div>
@@ -392,14 +393,38 @@
                                         <div class="col mr-2">
                                             <div
                                                 class="text-xs font-weight-bold text-success text-uppercase mb-1 text-center">
-                                                Profit & Loss</div>
-                                            <div class="h5 mb-0 font-weight-bold text-center"
-                                                style="{% if total_proandloss < 0 %} color: red;{% else %}color: green;{% endif %}">
-                                                ${{total_proandloss | floatformat:2}}</div>
+                                                Funds</div>
+                                            <div class="h5 mb-0 font-weight-bold text-center">
+                                                {% if messages %}
+
+                                                {% for message in messages %}
+
+                                                <div class="alert alert-danger w-75 mx-auto text-center" role="alert">
+                                                    {{ message }}
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                {% endfor %}
+
+                                                {% endif %}
+                                                <form action="/user/fund-activity/" method="post" id="form-amount">
+                                                    {% csrf_token %}
+                                                    <input type="number" name="amount"
+                                                        class="form-control m-3 w-75 mx-auto text-center"
+                                                        placeholder="Enter amount">
+                                                    <input type="text" name="status" id="status" value=""
+                                                        class="d-none">
+                                                    <button type="button" class="btn btn-success"
+                                                        onclick="deposit()">Deposit</button>
+                                                    <button type="button" class="btn btn-danger"
+                                                        onclick="withdraw()">Withdraw</button>
+                                                </form>
+                                            </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -430,7 +455,7 @@
                                                     <th scope="col" class="text-center">Name</th>
                                                     <th scope="col" class="text-center">Quantity</th>
                                                     <th scope="col" class="text-center">Price</th>
-                                                    <th scope="col" class="text-center">Total Ammount</th>
+                                                    <th scope="col" class="text-center">Total amount</th>
                                                     <th scope="col" class="text-center">Status </th>
                                                 </tr>
                                             </thead>
@@ -476,7 +501,7 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary"><a href="/user/dashboard/">Ammount
+                                    <h6 class="m-0 font-weight-bold text-primary"><a href="/user/dashboard/">amount
                                             Transaction</a></h6>
 
                                 </div>
@@ -487,12 +512,11 @@
                                         <table class="table table-light ">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" class="text-center">Image</th>
-                                                    <th scope="col" class="text-center">Name</th>
-                                                    <th scope="col" class="text-center">Symbol</th>
-                                                    <th scope="col" class="text-center">Current Price</th>
-                                                    <th scope="col" class="text-center">Changes % (24h)</th>
-                                                    <th scope="col" class="text-center">volume (24h) </th>
+                                                    <th scope="col" class="text-center">S. No.</th>
+                                                    <th scope="col" class="text-center">Status</th>
+                                                    <th scope="col" class="text-center">Ammount</th>
+                                                    <th scope="col" class="text-center">Date and Time</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody id="myTable">
@@ -501,28 +525,22 @@
                                                     {{ error_message }}
                                                 </div>
                                                 {%else%}
-                                                {% for i in api_data %}
+                                                {% for i in funds_activity %}
                                                 <tr>
-                                                    <td class="text-center"><img
-                                                            src="https://coinicons-api.vercel.app/api/icon/{{i.symbol.lower}}"
-                                                            style="height: 40px; width:40px;">
-                                                    </td>
                                                     <td class="text-center name-column">
-                                                        <h6>{{i.coin_name}}</h6>
+                                                        <h6>{{forloop.counter}}</h6>
                                                     </td>
-                                                    <td class="text-center symbol-column">{{i.symbol}}</td>
+                                                    <td class="text-center name-column"
+                                                        style="{% if i.status == 'withdraw' %} color: red;{% else %}color: green;{% endif %}">
+                                                        <h6>{{i.status}}</h6>
+                                                    </td>
+                                                    <td class="text-center symbol-column">${{i.amount |floatformat:2}}
+                                                    </td>
                                                     <td class="text-center price-column">
-                                                        {{i.quote.USD.price|floatformat:2}}</td>
-                                                    <td class="text-center percent-change-column"
-                                                        style="{% if i.quote.USD.percent_change_24h < 0 %}color: red;{% else %}color: green;{% endif %}">
-                                                        {{ i.quote.USD.percent_change_24h|floatformat:2 }}
-                                                    </td>
-                                                    <td class="text-center volume-column">
-                                                        {{i.quote.USD.volume_24h|floatformat:2}}</td>
+                                                        {{i.timestamp}}</td>
 
-                                                </tr>
-                                                {% endfor %}
-                                                {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
 
                                             </tbody>
                                         </table>
@@ -614,5 +632,27 @@
     <script src="/static/js/demo/chart-pie-demo.js"></script>
 
 </body>
+
+
+
+<script>
+    function deposit() {
+        var form = document.getElementById("form-amount");
+        var status = document.getElementById("status");
+
+        status.value = "deposit";
+        form.submit();
+    }
+
+    function withdraw() {
+        var form = document.getElementById("form-amount");
+        var status = document.getElementById("status");
+
+        status.value = "withdraw";
+        form.submit();
+    }
+
+
+</script>
 
 </html>

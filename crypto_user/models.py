@@ -68,3 +68,13 @@ class CoinTransaction(models.Model):
 
     def __str__(self):
         return f"{self.userwallet} = {self.coin_name} * {self.coin_quantity}"
+
+
+class FundTransactions(models.Model):
+    userwallet = models.ForeignKey(UserWallet, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    amount = models.FloatField(default=0.0)
+    status = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.userwallet} = {self.amount} - {self.status}"
