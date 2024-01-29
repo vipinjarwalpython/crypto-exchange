@@ -314,10 +314,12 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
+                                {% if not user.userprofile.kycinformation.verification_status %}
                                 <a class="dropdown-item" href="/user/kyc/">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     KYC
                                 </a>
+                                {% endif %}
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
@@ -535,28 +537,28 @@
                                                 {% endif %}
 
 
-                                                <form method="post" action="/user/coin-register/" id="form-coin">
+                                                <form method="POST" action="/user/coin-register/" id="form-coin">
                                                     {% csrf_token %}
                                                     <div class="mb-3">
                                                         <label for="text" class="form-label">Coin</label>
                                                         <input type="text" class="form-control" id="coin"
-                                                            name="coin_name" disabled>
+                                                            name="coin_name" readonly>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="price" class="form-label">Price</label>
-                                                        <input type="float" class="form-control" id="price"
-                                                            name="coin_price" disabled>
+                                                        <input type="number" class="form-control" id="price"
+                                                            name="coin_price" readonly>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="quantity" class="form-label">Quantity</label>
-                                                        <input type="float" class="form-control" id="coin_quantity"
+                                                        <input type="number" class="form-control" id="coin_quantity"
                                                             name="coin_quantity" onchange="calculate(event)">
                                                     </div>
 
                                                     <div class="mb-3">
                                                         <label for="total_ammount" class="form-label">Total
                                                             Ammount</label>
-                                                        <input type="float" class="form-control" id="total_ammount"
+                                                        <input type="number" class="form-control" id="total_ammount"
                                                             value="0" name="total_ammount">
                                                     </div>
                                                     <input type="text" class="d-none" id="status" name="coin_status"
@@ -979,7 +981,7 @@
 
     function startReloadTimer() {
         // Start the reload timer if the user is inactive
-        reloadTimer = setTimeout(reloadPage, 60000); // 10000 milliseconds = 10 seconds
+        reloadTimer = setTimeout(reloadPage, 30000); // 10000 milliseconds = 10 seconds
     }
 
     function resetReloadTimer() {

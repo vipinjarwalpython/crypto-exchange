@@ -1,0 +1,337 @@
+{
+	"info": {
+		"_postman_id": "0889a217-713e-4818-b94c-08dee78444fd",
+		"name": "Crypto-Exchange-Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31607840"
+	},
+	"item": [
+		{
+			"name": "User-Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "first_name",
+							"value": "shubham",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "rankwa",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "shubham",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "shubham@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "password1",
+							"value": "12345",
+							"type": "text"
+						},
+						{
+							"key": "password2",
+							"value": "12345",
+							"type": "text"
+						},
+						{
+							"key": "phone_number",
+							"value": "78912654161",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/user/api/signup/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"api",
+						"signup",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User-Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "shubham1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/user/api/login/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User-Logout",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "User-KYC",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2MTczODQ2LCJpYXQiOjE3MDYxNjY2NDYsImp0aSI6ImUwYTQxOTFjZTRkOTQzZWE5OTk3Y2I3NjFhZWQxYTdlIiwidXNlcl9pZCI6MjJ9.aJu7RDkQzeb33F1mQe8J2SvTj_GERsw9eWqAQeKmh9Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "document_type",
+							"value": "aadhar card",
+							"type": "text"
+						},
+						{
+							"key": "document_number",
+							"value": "541326541321323",
+							"type": "text"
+						},
+						{
+							"key": "date_of_birth",
+							"value": "1993-03-01",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "indore",
+							"type": "text"
+						},
+						{
+							"key": "document_image",
+							"type": "file",
+							"src": "/C:/Users/LENOVO/Downloads/images.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{myip}}/user/api/kyc/",
+					"protocol": "http",
+					"host": [
+						"{{myip}}"
+					],
+					"path": [
+						"user",
+						"api",
+						"kyc",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Coins-Info-Page",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2MTkxODExLCJpYXQiOjE3MDYxODQ2MTEsImp0aSI6ImJmNTNkNjU3OGY2ZDQ5NjA4N2FlYWRhMGRkZDFiYmNhIiwidXNlcl9pZCI6MTV9.1oentwHs_STQzd6HK1tMvd6xesNtQ0MPjwWFsAP0DOs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "coin",
+							"value": "solana",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "userwallet",
+							"value": "vickybaba",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "coin_name",
+							"value": "sol",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "coin_status",
+							"value": "buy",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{myip}}/user/api/user-dashboard/",
+					"protocol": "http",
+					"host": [
+						"{{myip}}"
+					],
+					"path": [
+						"user",
+						"api",
+						"user-dashboard",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User-Trade",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2MTczODQ2LCJpYXQiOjE3MDYxNjY2NDYsImp0aSI6ImUwYTQxOTFjZTRkOTQzZWE5OTk3Y2I3NjFhZWQxYTdlIiwidXNlcl9pZCI6MjJ9.aJu7RDkQzeb33F1mQe8J2SvTj_GERsw9eWqAQeKmh9Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "coin_name",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "coin_quantity",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "coin_price",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "coin_status",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "total_amount",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{myip}}/user/api/user-dashboard/",
+					"protocol": "http",
+					"host": [
+						"{{myip}}"
+					],
+					"path": [
+						"user",
+						"api",
+						"user-dashboard",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "myip",
+			"value": "192.168.0.241:8000",
+			"type": "string"
+		}
+	]
+}

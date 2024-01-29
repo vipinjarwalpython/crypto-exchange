@@ -599,7 +599,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="price" class="form-label">Price</label>
-                                                        <input type="number" class="form-control" id="price"
+                                                        <input type="number" step="any" class="form-control" id="price"
                                                             name="price">
                                                     </div>
                                                     <div class="mb-3">
@@ -905,7 +905,7 @@
 
 </body>
 
-</html>
+
 
 <!-- Clickable Dashboard -->
 <script>
@@ -989,3 +989,31 @@
         document.getElementById("total_ammount").value = total.toFixed(2);
     }
 </script>
+
+<script>
+    var reloadTimer;
+
+    function reloadPage() {
+        location.reload();
+    }
+
+    function startReloadTimer() {
+        // Start the reload timer if the user is inactive
+        reloadTimer = setTimeout(reloadPage, 30000); // 10000 milliseconds = 10 seconds
+    }
+
+    function resetReloadTimer() {
+        // Reset the reload timer when the user is active
+        clearTimeout(reloadTimer);
+        startReloadTimer();
+    }
+
+    // Start the timer initially
+    startReloadTimer();
+
+    // Listen for user activity events
+    document.addEventListener("mousemove", resetReloadTimer);
+    document.addEventListener("keypress", resetReloadTimer);
+</script>
+
+</html>

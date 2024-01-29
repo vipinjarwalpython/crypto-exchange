@@ -6,6 +6,7 @@ from .models import (
     UserCryptoWallet,
     CoinTransaction,
     FundTransactions,
+    UpdateCoinDetails,
 )
 
 # Register your models here.
@@ -16,3 +17,4 @@ admin.site.register(UserWallet)
 admin.site.register(UserCryptoWallet)
 admin.site.register(CoinTransaction)
 admin.site.register(FundTransactions)
+admin.site.register(UpdateCoinDetails)

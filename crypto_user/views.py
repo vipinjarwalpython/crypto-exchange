@@ -226,6 +226,15 @@ def order_execute(request):
         userwallet = request.user.userprofile.userwallet
         coin_status = request.POST.get("coin_status")
 
+        print(coin_name)
+        print(coin_quantity)
+        print(total_amount)
+
+        print(coin_price)
+        print(userwallet)
+
+        print(coin_status)
+
         user_coins = UserCryptoWallet.objects.filter(
             userwallet=request.user.userprofile.userwallet
         )
@@ -233,7 +242,7 @@ def order_execute(request):
         for i in user_coins:
             if i.coin_name == coin_name:
                 if coin_status == "buy":
-                    if userwallet.balance >= i.total_amount:
+                    if userwallet.balance >= total_amount:
                         i.coin_quantity = i.coin_quantity + coin_quantity
                         i.total_amount = i.total_amount + total_amount
                         i.coin_status = coin_status
@@ -370,3 +379,124 @@ def funds_activity(request):
         )
 
         return redirect("/user/activity/")
+
+
+# def order_execute(request):
+#     if request.method == "POST":
+#         coin_name = request.POST.get("coin_name")
+#         coin_quantity = request.POST.get("coin_quantity")
+#         coin_price = request.POST.get("coin_price")
+#         total_amount = request.POST.get("total_ammount")
+#         userwallet = request.user.userprofile.userwallet
+#         coin_status = request.POST.get("coin_status")
+
+#         # Check if values are not None before converting to float
+#         if (
+#             coin_quantity is not None
+#             and coin_price is not None
+#             and total_amount is not None
+#         ):
+#             try:
+#                 coin_quantity = float(coin_quantity)
+#                 coin_price = float(coin_price)
+#                 total_amount = float(total_amount)
+#             except ValueError as e:
+#                 # Handle the case where conversion to float fails
+#                 messages.error(request, "Invalid input. Please enter valid numbers.")
+#                 return redirect("/user/dashboard/")
+
+#         user_coins = UserCryptoWallet.objects.filter(
+#             userwallet=request.user.userprofile.userwallet
+#         )
+
+#         for i in user_coins:
+#             if i.coin_name == coin_name:
+#                 if coin_status == "buy":
+#                     if userwallet.balance >= i.total_amount:
+#                         i.coin_quantity = i.coin_quantity + coin_quantity
+#                         i.total_amount = i.total_amount + total_amount
+#                         i.coin_status = coin_status
+
+#                         userwallet.balance = userwallet.balance - (
+#                             coin_price * coin_quantity
+#                         )
+#                         userwallet.save()
+#                     else:
+#                         messages.error(
+#                             request,
+#                             f"Insufficient balance. Please deposit {i.total_amount} {i.coin_name} to your wallet",
+#                         )
+#                         return redirect("/user/dashboard/")
+
+#                 if coin_status == "sell":
+#                     if i.coin_quantity >= coin_quantity and coin_quantity >= 0.0:
+#                         i.coin_quantity = i.coin_quantity - coin_quantity
+#                         i.total_amount = i.total_amount - total_amount
+#                         i.coin_status = coin_status
+
+#                         userwallet.balance = userwallet.balance + (
+#                             coin_price * coin_quantity
+#                         )
+#                         userwallet.save()
+#                     else:
+#                         messages.error(
+#                             request,
+#                             f"Sell only coin name - {coin_name} quantity - {i.coin_quantity}",
+#                         )
+#                         return redirect("/user/dashboard/")
+#                 i.save()
+
+#                 CoinTransaction.objects.create(
+#                     userwallet=i.userwallet,
+#                     coin_name=i.coin_name,
+#                     coin_quantity=i.coin_quantity,
+#                     coin_price=i.coin_price,
+#                     total_amount=i.total_amount,
+#                     coin_status=i.coin_status,
+#                 )
+
+#                 return redirect("/user/dashboard/")
+
+#         print(userwallet.balance)
+#         print(total_amount)
+#         if coin_status == "buy":
+#             if userwallet.balance >= float(total_amount):
+#                 userwallet.balance = userwallet.balance - (coin_price * coin_quantity)
+#                 userwallet.save()
+#             else:
+#                 messages.error(
+#                     request,
+#                     f"Insufficient balance. Please deposit {total_amount}  -  {coin_name} to your wallet",
+#                 )
+#                 return redirect("/user/dashboard/")
+
+#         else:
+#             if coin_quantity > 0.0:
+#                 userwallet.balance = userwallet.balance + (coin_price * coin_quantity)
+#                 userwallet.save()
+#             else:
+#                 messages.error(
+#                     request,
+#                     f"Sell only this - {coin_name} - {coin_quantity}",
+#                 )
+#                 return redirect("/user/dashboard/")
+
+#         UserCryptoWallet.objects.create(
+#             userwallet=userwallet,
+#             coin_name=coin_name,
+#             coin_quantity=coin_quantity,
+#             coin_price=coin_price,
+#             total_amount=total_amount,
+#             coin_status=coin_status,
+#         )
+
+#         CoinTransaction.objects.create(
+#             userwallet=userwallet,
+#             coin_name=coin_name,
+#             coin_quantity=coin_quantity,
+#             coin_price=coin_price,
+#             total_amount=total_amount,
+#             coin_status=coin_status,
+#         )
+
+#         return redirect("/user/dashboard/")

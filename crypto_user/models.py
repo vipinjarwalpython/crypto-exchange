@@ -78,3 +78,15 @@ class FundTransactions(models.Model):
 
     def __str__(self):
         return f"{self.userwallet} = {self.amount} - {self.status}"
+
+
+class UpdateCoinDetails(models.Model):
+    userwallet = models.ForeignKey(UserWallet, on_delete=models.CASCADE)
+    user_crypto_wallet = models.OneToOneField(
+        UserCryptoWallet, on_delete=models.CASCADE
+    )
+    current_price = models.FloatField(default=0.0)
+    profitandloss = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"{self.user_crypto_wallet}"

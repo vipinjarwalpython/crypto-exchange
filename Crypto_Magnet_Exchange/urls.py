@@ -10,6 +10,7 @@ urlpatterns = [
     # path("", views.index, name="index"),
     path("", include("crypto_token.urls")),
     path("user/", include("crypto_user.urls")),
+    path("user/api/", include("crypto_user.user_api.urls")),
 ]
 
 
