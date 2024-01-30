@@ -71,8 +71,22 @@ class UserWalletSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class CoinSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    symbol = serializers.CharField()
+    slug = serializers.CharField()
+    quote = serializers.DictField(child=serializers.DictField())
+
+
+class CoinDetailsSerializer(serializers.Serializer):
+    success = serializers.BooleanField()
+    status = serializers.IntegerField()
+    coin_info = CoinSerializer(many=True)
+
+
 class UserDashboardSerializer(serializers.ModelSerializer):
-    # userwallet = UserWalletSerializer()
+    userwallet = UserWalletSerializer()
 
     class Meta:
         model = UserCryptoWallet
@@ -84,4 +98,20 @@ class UserCoinsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UpdateCoinDetails
+        fields = "__all__"
+
+
+class UserCoinActivitySerializer(serializers.ModelSerializer):
+    # userwallet = UserWalletSerializer()
+
+    class Meta:
+        model = CoinTransaction
+        fields = "__all__"
+
+
+class UserFundActivitySerializer(serializers.ModelSerializer):
+    # userwallet = UserWalletSerializer()
+
+    class Meta:
+        model = FundTransactions
         fields = "__all__"

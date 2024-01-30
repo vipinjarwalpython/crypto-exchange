@@ -189,8 +189,8 @@ class UserDashboardView(APIView):
         session.headers.update(headers)
         try:
             # Delete objects with coin_quantity equal to 0.0
-            quntityzero = UserCryptoWallet.objects.filter(coin_quantity=0.0)
-            quntityzero.delete()
+            # quntityzero = UserCryptoWallet.objects.filter(coin_quantity=0.0)
+            # quntityzero.delete()
 
             response = session.get(url, params=parameters)
             data = json.loads(response.text)
@@ -203,12 +203,12 @@ class UserDashboardView(APIView):
 
             if coin is not None:
                 for i in api_data:
-                    if data["coin"].lower() == i.get("slug"):
+                    if coin.lower() == i.get("slug"):
                         filtered_api_data.append(i)
                         print(filtered_api_data)
 
                 if filtered_api_data:
-                    serializer = UserDashboardSerializer(
+                    serializer = CoinDetailsSerializer(
                         data={
                             "success": True,
                             "status": status.HTTP_200_OK,
@@ -216,7 +216,7 @@ class UserDashboardView(APIView):
                         }
                     )
             else:
-                serializer = UserDashboardSerializer(
+                serializer = CoinDetailsSerializer(
                     data={
                         "success": True,
                         "status": status.HTTP_200_OK,
@@ -356,6 +356,16 @@ class OrderExecuteViews(APIView):
                             * float(data.get("coin_quantity"))
                         )
                         userwallet.save()
+                        i.save()
+
+                        CoinTransaction.objects.create(
+                            userwallet=i.userwallet,
+                            coin_name=data.get("coin_name"),
+                            coin_quantity=float(data.get("coin_quantity")),
+                            coin_price=float(data.get("coin_price")),
+                            total_amount=float(data.get("total_amount")),
+                            coin_status=data.get("coin_status"),
+                        )
 
                         serializer = UserDashboardSerializer(i)
                         context = {
@@ -380,6 +390,8 @@ class OrderExecuteViews(APIView):
                         i.coin_quantity = i.coin_quantity - float(
                             data.get("coin_quantity")
                         )
+                        print("================================")
+
                         i.total_amount = i.total_amount - float(
                             data.get("total_amount")
                         )
@@ -390,6 +402,16 @@ class OrderExecuteViews(APIView):
                             * float(data.get("coin_quantity"))
                         )
                         userwallet.save()
+                        i.save()
+
+                        CoinTransaction.objects.create(
+                            userwallet=i.userwallet,
+                            coin_name=data.get("coin_name"),
+                            coin_quantity=float(data.get("coin_quantity")),
+                            coin_price=float(data.get("coin_price")),
+                            total_amount=float(data.get("total_amount")),
+                            coin_status=data.get("coin_status"),
+                        )
 
                         serializer = UserDashboardSerializer(i)
                         context = {
@@ -405,23 +427,6 @@ class OrderExecuteViews(APIView):
                             "status": status.HTTP_400_BAD_REQUEST,
                         }
                         return Response(context)
-                i.save()
-
-                CoinTransaction.objects.create(
-                    userwallet=i.userwallet,
-                    coin_name=i.coin_name,
-                    coin_quantity=i.coin_quantity,
-                    coin_price=i.coin_price,
-                    total_amount=i.total_amount,
-                    coin_status=i.coin_status,
-                )
-
-                context = {
-                    "success": True,
-                    "status": status.HTTP_201_CREATED,
-                    "msg": "Coin transaction created",
-                }
-                return Response(context)
 
         if data.get("coin_status") == "buy":
             if userwallet.balance >= float(data.get("total_amount")):
@@ -445,6 +450,7 @@ class OrderExecuteViews(APIView):
                     float(data.get("coin_price")) * float(data.get("coin_quantity"))
                 )
                 userwallet.save()
+
                 serializer = UserDashboardSerializer(i)
 
             else:
@@ -478,3 +484,96 @@ class OrderExecuteViews(APIView):
             "coin_info": serializer.data,
         }
         return Response(context)
+
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+class UserCoinsActivityViews(APIView):
+    def get(self, request, *args, **kwargs):
+        user_coin_data = CoinTransaction.objects.filter(
+            userwallet=request.user.userprofile.userwallet
+        )
+
+        serializer = UserCoinActivitySerializer(user_coin_data, many=True)
+
+        context = {
+            "success": True,
+            "status": status.HTTP_200_OK,
+            "coin_info": serializer.data,
+        }
+        return Response(context)
+
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+class UserFundsActivityViews(APIView):
+    def get(self, request, *args, **kwargs):
+        user_fund_data = FundTransactions.objects.filter(
+            userwallet=request.user.userprofile.userwallet
+        )
+
+        serializer = UserFundActivitySerializer(user_fund_data, many=True)
+
+        context = {
+            "success": True,
+            "status": status.HTTP_200_OK,
+            "funds_info": serializer.data,
+        }
+        return Response(context)
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        userwallet = request.user.userprofile.userwallet
+
+        print(data)
+
+        if data.get("status") == "deposit":
+            if float(data.get("amount")) > 0:
+                userwallet.balance = userwallet.balance + float(data.get("amount"))
+                userwallet.save()
+
+                FundTransactions.objects.create(
+                    userwallet=userwallet,
+                    amount=float(data.get("amount")),
+                    status=data.get("status"),
+                )
+
+                context = {
+                    "success": True,
+                    "status": status.HTTP_200_OK,
+                    "ammount": float(data.get("amount")),
+                    "msg": "Successfully Deposit ",
+                    "wallet balance": userwallet.balance,
+                }
+                return Response(context)
+            else:
+                context = {
+                    "success": False,
+                    "status": status.HTTP_400_BAD_REQUEST,
+                }
+                return Response(context)
+        else:
+            if float(data.get("amount")) < userwallet.balance:
+                userwallet.balance = userwallet.balance - float(data.get("amount"))
+                userwallet.save()
+
+                FundTransactions.objects.create(
+                    userwallet=userwallet,
+                    amount=float(data.get("amount")),
+                    status=data.get("status"),
+                )
+
+                context = {
+                    "success": True,
+                    "status": status.HTTP_200_OK,
+                    "ammount": float(data.get("amount")),
+                    "msg": "Successfully Withdraw ",
+                    "wallet balance": userwallet.balance,
+                }
+                return Response(context)
+            else:
+                context = {
+                    "success": False,
+                    "status": status.HTTP_400_BAD_REQUEST,
+                }
+                return Response(context)
